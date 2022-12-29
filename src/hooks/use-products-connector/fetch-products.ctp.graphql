@@ -12,6 +12,16 @@ query FetchProducts($limit: Int!, $offset: Int!, $sort: [String!]) {
                 locale
                 value
             }
+            masterVariant {
+                images {
+                    url
+                    label
+                  dimensions {
+                    width
+                    height
+                  }
+                }
+          }
         }
       }
     }

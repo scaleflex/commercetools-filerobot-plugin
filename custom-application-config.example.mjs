@@ -6,10 +6,10 @@ import { PERMISSIONS, entryPointUriPath } from './src/constants';
 const config = {
   name: 'Filerobot',
   entryPointUriPath,
-  cloudIdentifier: 'gcp-au',
+  cloudIdentifier: 'gcp-eu',
   env: {
     development: {
-      initialProjectKey: 'filerobot',
+      initialProjectKey: 'project-key',
     },
     production: {
       applicationId: 'TODO',

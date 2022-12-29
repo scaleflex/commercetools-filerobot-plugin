@@ -3,3 +3,4 @@ node_modules
 dist
 !.env
 .env.local
+custom-application-config.mjs
