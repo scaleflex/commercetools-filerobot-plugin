@@ -1,29 +1,34 @@
 query FetchProducts($limit: Int!, $offset: Int!, $sort: [String!]) {
-  products(limit: $limit, offset: $offset, sort: $sort) {
-    total
-    count
-    offset
-    results {
-      id
-      key
-      masterData {
-        current {
-            nameAllLocales {
-                locale
-                value
-            }
-            masterVariant {
-                images {
-                    url
-                    label
-                  dimensions {
-                    width
-                    height
-                  }
+    products(limit: $limit, offset: $offset, sort: $sort) {
+        total
+        count
+        offset
+        results {
+            id
+            key
+            masterData {
+                current {
+                    nameAllLocales {
+                        locale
+                        value
+                    }
+                    allVariants {
+                        images {
+                            url
+                        }
+                    }
+                    masterVariant {
+                        images {
+                            url
+                            label
+                            dimensions {
+                                width
+                                height
+                            }
+                        }
+                    }
                 }
-          }
+            }
         }
-      }
     }
-  }
 }
