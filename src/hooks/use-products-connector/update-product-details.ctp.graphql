@@ -1,0 +1,16 @@
+mutation UpdateProductDetails(
+  $channelId: String!
+  $version: Long!
+  $actions: [ProductUpdateAction!]!
+) {
+  updateProduct(id: $productId, version: $version, actions: $actions) {
+    id
+    version
+    key
+    roles
+    nameAllLocales {
+      locale
+      value
+    }
+  }
+}

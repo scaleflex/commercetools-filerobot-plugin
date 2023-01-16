@@ -1,1 +1,5 @@
-{}
+{
+  "Products.backToWelcome": "Back to Welcome page",
+  "Products.title": "Product list",
+  "Products.noResults": "There are no products available in this project."
+}

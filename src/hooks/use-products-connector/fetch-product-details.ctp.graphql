@@ -2,13 +2,18 @@ query FetchProductDetails($productId: String!) {
   product(id: $productId) {
     id
     key
-    masterData {
-       current {
-          nameAllLocales {
-             locale
-             value
-          }
-       }
+    masterData { staged { ...Product } }
+  }
+}
+
+fragment Product on ProductData {
+  skus,
+  nameAllLocales {
+    value, locale
+  },
+  variants {
+    images {
+      url
     }
   }
 }

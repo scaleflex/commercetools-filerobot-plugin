@@ -35,7 +35,6 @@ import ProductDetails  from '../product-details';
 const columns = [
   { key: 'id', label: 'ID' },
   { key: 'name', label: 'Product name' },
-  { key: 'image', label: 'Product Image' },
   { key: 'key', label: 'Product key', isSortable: true }
 ];
 
@@ -51,8 +50,6 @@ const itemRenderer = (item, column, dataLocale, projectLanguages) => {
             fallback: NO_VALUE_FALLBACK,
           }
       );
-    case 'image':
-      return '<img src="' + item.masterData.current.masterVariant.images[0].url + '">';
     default:
       return item[column.key];
   }
