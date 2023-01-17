@@ -39,4 +39,8 @@ export default defineMessages({
     defaultMessage:
       'We were unable to fetch the product details. Please check your connection, the provided product ID and try again.',
   },
+  changeVariantImage: {
+    id: 'ProductDetails.changeVariantImage',
+    defaultMessage: 'Change Image'
+  }
 });

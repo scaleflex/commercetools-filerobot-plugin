@@ -77,61 +77,63 @@ const ProductDetails = (props) => {
             showNotification,
         ]
     );
-    console.log(product);
+
     return (
-        <ProductDetailsForm
-            initialValues={docToFormValues(product, projectLanguages)}
-            onSubmit={handleSubmit}
-            isReadOnly={!canManage}
-            dataLocale={dataLocale}
-        >
-            {(formProps) => {
-                const productName = formatLocalizedString(
-                    {
-                        name: formProps.values?.name,
-                    },
-                    {
-                        key: 'name',
-                        locale: dataLocale,
-                        fallbackOrder: projectLanguages,
-                        fallback: NO_VALUE_FALLBACK,
-                    }
-                );
-                return (
-                    <FormModalPage
-                        title={productName}
-                        isOpen
-                        onClose={props.onClose}
-                        isPrimaryButtonDisabled={
-                            formProps.isSubmitting || !formProps.isDirty || !canManage
+        <Spacings.Stack scale="xl">
+            <ProductDetailsForm
+                initialValues={docToFormValues(product, projectLanguages)}
+                onSubmit={handleSubmit}
+                isReadOnly={!canManage}
+                dataLocale={dataLocale}
+            >
+                {(formProps) => {
+                    const productName = formatLocalizedString(
+                        {
+                            name: formProps.values?.name,
+                        },
+                        {
+                            key: 'name',
+                            locale: dataLocale,
+                            fallbackOrder: projectLanguages,
+                            fallback: NO_VALUE_FALLBACK,
                         }
-                        isSecondaryButtonDisabled={!formProps.isDirty}
-                        onSecondaryButtonClick={formProps.handleReset}
-                        onPrimaryButtonClick={formProps.submitForm}
-                        labelPrimaryButton={FormModalPage.Intl.save}
-                        labelSecondaryButton={FormModalPage.Intl.revert}
-                    >
-                        {loading && (
-                            <Spacings.Stack alignItems="center">
-                                <LoadingSpinner />
-                            </Spacings.Stack>
-                        )}
-                        {error && (
-                            <ContentNotification type="error">
-                                <Text.Body>
-                                    {intl.formatMessage(messages.channelDetailsErrorMessage)}
-                                </Text.Body>
-                            </ContentNotification>
-                        )}
-                        {product && formProps.formElements}
-                        {product && (
-                            <ApplicationPageTitle additionalParts={[productName]} />
-                        )}
-                        {product === null && <PageNotFound />}
-                    </FormModalPage>
-                );
-            }}
-        </ProductDetailsForm>
+                    );
+                    return (
+                        <FormModalPage
+                            title={productName}
+                            isOpen
+                            onClose={props.onClose}
+                            isPrimaryButtonDisabled={
+                                formProps.isSubmitting || !formProps.isDirty || !canManage
+                            }
+                            isSecondaryButtonDisabled={!formProps.isDirty}
+                            onSecondaryButtonClick={formProps.handleReset}
+                            onPrimaryButtonClick={formProps.submitForm}
+                            labelPrimaryButton={FormModalPage.Intl.save}
+                            labelSecondaryButton={FormModalPage.Intl.revert}
+                        >
+                            {loading && (
+                                <Spacings.Stack alignItems="center">
+                                    <LoadingSpinner />
+                                </Spacings.Stack>
+                            )}
+                            {error && (
+                                <ContentNotification type="error">
+                                    <Text.Body>
+                                        {intl.formatMessage(messages.productDetailsErrorMessage)}
+                                    </Text.Body>
+                                </ContentNotification>
+                            )}
+                            {product && formProps.formElements}
+                            {product && (
+                                <ApplicationPageTitle additionalParts={[productName]} />
+                            )}
+                            {product === null && <PageNotFound />}
+                        </FormModalPage>
+                    );
+                }}
+            </ProductDetailsForm>
+        </Spacings.Stack>
     );
 };
 ProductDetails.displayName = 'ProductDetails';
