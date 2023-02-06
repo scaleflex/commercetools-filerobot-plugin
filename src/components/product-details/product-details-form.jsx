@@ -8,7 +8,12 @@ import Grid from '@commercetools-uikit/grid';
 import PrimaryButton from '@commercetools-uikit/primary-button';
 import validate from './validate';
 import messages from './messages';
+import DataTable from '@commercetools-uikit/data-table';
 import {FormModalPage} from "@commercetools-frontend/application-components";
+import {formatLocalizedString, transformLocalizedFieldToLocalizedString} from "@commercetools-frontend/l10n";
+import {NO_VALUE_FALLBACK} from "@commercetools-frontend/constants";
+import {useDataTableSortingState} from "@commercetools-uikit/hooks";
+import {useApplicationContext} from "@commercetools-frontend/application-shell-connectors";
 
 const ProductDetailsForm = (props) => {
     const intl = useIntl();
@@ -19,8 +24,31 @@ const ProductDetailsForm = (props) => {
         enableReinitialize: true,
     });
 
+    const tableSorting = useDataTableSortingState({ key: 'key', order: 'asc' });
+    const { dataLocale, projectLanguages } = useApplicationContext((context) => ({
+        dataLocale: context.dataLocale,
+        projectLanguages: context.project.languages,
+    }));
+
+    const columns = [
+        { key: 'id', label: 'Variant ID', isSortable: true },
+        { key: 'sku', label: 'SKU' },
+        { key: 'key', label: 'Key'},
+        { key: 'images', label: 'Image'}
+    ];
+
+    const itemRenderer = (item, column, dataLocale, projectLanguages) => {
+        switch (column.key) {
+            case 'images':
+                return item[column.key][0].url;
+            default:
+                return item[column.key];
+        }
+    };
+
     const formElements = (
         <Spacings.Stack scale="xl">
+
             <Grid
                 gridGap="16px"
                 gridAutoColumns="1fr"
@@ -61,13 +89,26 @@ const ProductDetailsForm = (props) => {
                     />
                 </Grid.Item>
             </Grid>
+
             <h3>Variants</h3>
 
+            <DataTable
+                isCondensed
+                columns={columns}
+                rows={formik.values.allVariants}
+                itemRenderer={(item, column) =>
+                    itemRenderer(item, column, dataLocale, projectLanguages)
+                }
+                maxHeight={600}
+                sortedBy={tableSorting.value.key}
+                sortDirection={tableSorting.value.order}
+                onSortChange={tableSorting.onChange}
+            />
                 {formik.values.allVariants.map(value => (
                     <Grid
                         gridGap="16px"
                         gridAutoColumns="1fr"
-                        gridTemplateColumns="repeat(4, 1fr)"
+                        gridTemplateColumns="repeat(5, 1fr)"
                         key={value.id}
                     >
                         <Grid.Item>
@@ -80,26 +121,14 @@ const ProductDetailsForm = (props) => {
                             Key: {value?.key}
                         </Grid.Item>
                         <Grid.Item>
-                            Images: <br/>
                             <img src={value?.images[0].url} alt="" width={200}/>
+                        </Grid.Item>
+                        <Grid.Item>
                             <PrimaryButton
                                 label={intl.formatMessage(messages.changeVariantImage)}
                                 onClick={() => {
-                                    return (
-                                        <FormModalPage
-                                            title="test"
-                                            isOpen
-                                            onClose={props.onClose}
-                                            isPrimaryButtonDisabled={true}
-                                            isSecondaryButtonDisabled={true}
-                                            onSecondaryButtonClick={true}
-                                            onPrimaryButtonClick={true}
-                                            labelPrimaryButton={FormModalPage.Intl.save}
-                                            labelSecondaryButton={FormModalPage.Intl.revert}
-                                        >
-                                            tesst
-                                        </FormModalPage>
-                                    );
+                                    alert('click')
+                                    return true;
                                 }}
                                 isDisabled={false}
                             />

@@ -1,5 +1,8 @@
 {
   "Products.backToWelcome": "Back to Welcome page",
   "Products.title": "Product list",
-  "Products.noResults": "There are no products available in this project."
+  "Products.noResults": "There are no products available in this project.",
+  "ProductDetails.changeVariantImage": "Change Image",
+  "ProductDetails.productKeyLabel": "Product key",
+  "ProductDetails.productNameLabel": "Product name"
 }
