@@ -4,14 +4,16 @@ import {transformLocalizedFieldToLocalizedString} from '@commercetools-frontend/
 export const docToFormValues = (product, languages) => ({
     name: LocalizedTextInput.createLocalizedString(
         languages,
-        transformLocalizedFieldToLocalizedString(product?.masterData.current.nameAllLocales ?? [])
+        transformLocalizedFieldToLocalizedString(product?.masterData.staged.nameAllLocales ?? [])
     ),
     key: product?.key ?? '',
-    allVariants: product?.masterData.current.allVariants ?? []
+    variants: product?.masterData.staged.variants ?? [],
+    masterVariant: product?.masterData.staged.masterVariant ?? []
 });
 
 export const formValuesToDoc = (formValues) => ({
     name: LocalizedTextInput.omitEmptyTranslations(formValues.name),
     key: formValues.key,
-    allVariants: formValues.allVariants
+    variants: formValues.variants,
+    masterVariant: formValues.masterVariant
 });

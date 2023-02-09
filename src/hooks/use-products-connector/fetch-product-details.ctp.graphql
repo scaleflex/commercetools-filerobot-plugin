@@ -3,11 +3,21 @@ query FetchProductDetails($productId: String!) {
     id
     key
     masterData {
-      current {
+      staged {
         nameAllLocales {
           value, locale
         },
-        allVariants {
+        masterVariant {
+            id,
+            images {
+                url,
+                label,
+                dimensions {width, height}
+            },
+            sku,
+            key
+        }
+        variants {
           id,
           images {
             url,

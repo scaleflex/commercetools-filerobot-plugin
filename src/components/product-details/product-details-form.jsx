@@ -1,19 +1,15 @@
 import PropTypes from 'prop-types';
 import {useFormik} from 'formik';
 import {useIntl} from 'react-intl';
-import LocalizedTextField from '@commercetools-uikit/localized-text-field';
-import TextField from '@commercetools-uikit/text-field';
 import Spacings from '@commercetools-uikit/spacings';
-import Grid from '@commercetools-uikit/grid';
-import PrimaryButton from '@commercetools-uikit/primary-button';
 import validate from './validate';
 import messages from './messages';
 import DataTable from '@commercetools-uikit/data-table';
-import {FormModalPage} from "@commercetools-frontend/application-components";
-import {formatLocalizedString, transformLocalizedFieldToLocalizedString} from "@commercetools-frontend/l10n";
-import {NO_VALUE_FALLBACK} from "@commercetools-frontend/constants";
 import {useDataTableSortingState} from "@commercetools-uikit/hooks";
 import {useApplicationContext} from "@commercetools-frontend/application-shell-connectors";
+import {Switch, useHistory, useRouteMatch} from "react-router-dom";
+import {SuspendedRoute} from "@commercetools-frontend/application-shell";
+import VariantDetails from "../variant-details/variant-details";
 
 const ProductDetailsForm = (props) => {
     const intl = useIntl();
@@ -23,7 +19,8 @@ const ProductDetailsForm = (props) => {
         validate,
         enableReinitialize: true,
     });
-
+    const match = useRouteMatch();
+    const { push } = useHistory();
     const tableSorting = useDataTableSortingState({ key: 'key', order: 'asc' });
     const { dataLocale, projectLanguages } = useApplicationContext((context) => ({
         dataLocale: context.dataLocale,
@@ -31,71 +28,29 @@ const ProductDetailsForm = (props) => {
     }));
 
     const columns = [
-        { key: 'id', label: 'Variant ID', isSortable: true },
-        { key: 'sku', label: 'SKU' },
+        { key: 'id', label: 'Variant ID' },
+        { key: 'sku', label: 'SKU', isSortable: true },
         { key: 'key', label: 'Key'},
-        { key: 'images', label: 'Image'}
+        { key: 'images', label: 'Image'},
     ];
 
     const itemRenderer = (item, column, dataLocale, projectLanguages) => {
         switch (column.key) {
             case 'images':
-                return item[column.key][0].url;
+                return <img src={item[column.key][0].url} alt="" style={{ maxWidth: 200, maxHeight: 100 }}/>;
             default:
                 return item[column.key];
         }
     };
 
+    const allVariants = formik.values.variants.concat(formik.values.masterVariant);
     const formElements = (
         <Spacings.Stack scale="xl">
-
-            <Grid
-                gridGap="16px"
-                gridAutoColumns="1fr"
-                gridTemplateColumns="repeat(2, 1fr)"
-            >
-                <Grid.Item>
-                    <LocalizedTextField
-                        name="name"
-                        title={intl.formatMessage(messages.productNameLabel)}
-                        value={formik.values.name}
-                        errors={formik.errors.name}
-                        touched={Boolean(formik.touched.name)}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        selectedLanguage={props.dataLocale}
-                        isReadOnly={props.isReadOnly}
-                        horizontalConstraint={13}
-                    />
-                </Grid.Item>
-                <Grid.Item>
-                    <TextField
-                        name="key"
-                        title={intl.formatMessage(messages.productKeyLabel)}
-                        value={formik.values.key}
-                        errors={formik.errors.key}
-                        touched={formik.touched.key}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        isReadOnly={props.isReadOnly}
-                        renderError={(errorKey) => {
-                            if (errorKey === 'duplicate') {
-                                return intl.formatMessage(messages.duplicateKey);
-                            }
-                            return null;
-                        }}
-                        isRequired
-                        horizontalConstraint={13}
-                    />
-                </Grid.Item>
-            </Grid>
-
             <h3>Variants</h3>
-
             <DataTable
                 isCondensed
                 columns={columns}
-                rows={formik.values.allVariants}
+                rows={allVariants}
                 itemRenderer={(item, column) =>
                     itemRenderer(item, column, dataLocale, projectLanguages)
                 }
@@ -103,39 +58,13 @@ const ProductDetailsForm = (props) => {
                 sortedBy={tableSorting.value.key}
                 sortDirection={tableSorting.value.order}
                 onSortChange={tableSorting.onChange}
+                onRowClick={(row) => push(`${match.url}/variants/${row.id}`)}
             />
-                {formik.values.allVariants.map(value => (
-                    <Grid
-                        gridGap="16px"
-                        gridAutoColumns="1fr"
-                        gridTemplateColumns="repeat(5, 1fr)"
-                        key={value.id}
-                    >
-                        <Grid.Item>
-                            Variant ID: {value?.id}
-                        </Grid.Item>
-                        <Grid.Item>
-                            Sku: {value?.sku}
-                        </Grid.Item>
-                        <Grid.Item>
-                            Key: {value?.key}
-                        </Grid.Item>
-                        <Grid.Item>
-                            <img src={value?.images[0].url} alt="" width={200}/>
-                        </Grid.Item>
-                        <Grid.Item>
-                            <PrimaryButton
-                                label={intl.formatMessage(messages.changeVariantImage)}
-                                onClick={() => {
-                                    alert('click')
-                                    return true;
-                                }}
-                                isDisabled={false}
-                            />
-                        </Grid.Item>
-                    </Grid>
-                    )
-                )}
+            <Switch>
+                <SuspendedRoute path={`${match.path}/variants/:variantId`}>
+                    <VariantDetails onClose={() => push(`${match.url}`)} />
+                </SuspendedRoute>
+            </Switch>
         </Spacings.Stack>
     );
 
