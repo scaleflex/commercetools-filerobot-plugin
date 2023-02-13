@@ -83,9 +83,7 @@ ProductDetailsForm.propTypes = {
     initialValues: PropTypes.shape({
         id: PropTypes.string,
         key: PropTypes.string,
-        name: PropTypes.object,
         version: PropTypes.number,
-        roles: PropTypes.arrayOf(PropTypes.string.isRequired),
     }),
     isReadOnly: PropTypes.bool.isRequired,
     dataLocale: PropTypes.string.isRequired,

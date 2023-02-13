@@ -9,15 +9,17 @@ import {useDataTableSortingState} from "@commercetools-uikit/hooks";
 import {useApplicationContext} from "@commercetools-frontend/application-shell-connectors";
 import {Switch, useHistory, useParams, useRouteMatch} from "react-router-dom";
 import SecondaryButton from '@commercetools-uikit/secondary-button';
-import { PlusThinIcon } from '@commercetools-uikit/icons';
+import { PlusThinIcon, BinLinearIcon } from '@commercetools-uikit/icons';
 import TextField from '@commercetools-uikit/text-field';
 import styles from './variant-style.css';
+import IconButton from '@commercetools-uikit/icon-button';
 
 const VariantDetailsForm = (props) => {
     const intl = useIntl();
     const formik = useFormik({
         initialValues: props.initialValues,
         onSubmit: props.onSubmit,
+        validate,
         enableReinitialize: true,
     });
     const match = useRouteMatch();
@@ -51,10 +53,10 @@ const VariantDetailsForm = (props) => {
                 gridTemplateColumns="repeat(2, 1fr)"
             >
                 {images.map((image, index) => (
-                    <Grid.Item>
+                    <Grid.Item key={index.toString()}>
                         <Grid
                             gridGap="8px"
-                            gridTemplateColumns="1fr 100% 20fr"
+                            gridTemplateColumns="0fr 20fr"
                             className={"imageInfo"}
                         >
                             <Grid.Item>
@@ -63,24 +65,30 @@ const VariantDetailsForm = (props) => {
                                 </div>
                             </Grid.Item>
                             <Grid.Item>
-                                <div className={"imageLabel"}>
-                                    <TextField
-                                        name="imageLabel"
-                                        title={intl.formatMessage(messages.variantImageLabel)}
-                                        value={image.label ?? ""}
-                                        touched={formik.touched.key}
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                        isReadOnly={props.isReadOnly}
-                                        renderError={(errorKey) => {
-                                            if (errorKey === 'duplicate') {
-                                                return intl.formatMessage(messages.duplicateKey);
-                                            }
-                                            return null;
-                                        }}
-                                        horizontalConstraint={13}
-                                    />
-                                </div>
+                                <Grid
+                                    gridGap="8px"
+                                    gridTemplateRows="auto auto"
+                                    alignContent="space-between"
+                                    style={{ height: "100%" }}
+                                >
+                                    <Grid.Item>
+                                        <div className={"imageLabel"}>
+                                            <TextField
+                                                name="imageLabel"
+                                                title={intl.formatMessage(messages.variantImageLabel)}
+                                                value={image.label ?? ""}
+                                                touched={formik.touched.key}
+                                                onChange={formik.handleChange}
+                                                onBlur={formik.handleBlur}
+                                            />
+                                        </div>
+                                    </Grid.Item>
+                                    <Grid.Item>
+                                        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                                            <IconButton icon={<BinLinearIcon />} label={"Deleted Image"} onClick={() => alert('Deleted image variant')}/>
+                                        </div>
+                                    </Grid.Item>
+                                </Grid>
                             </Grid.Item>
                         </Grid>
                     </Grid.Item>
@@ -104,9 +112,8 @@ VariantDetailsForm.propTypes = {
     initialValues: PropTypes.shape({
         id: PropTypes.string,
         key: PropTypes.string,
-        name: PropTypes.object,
+        imageLabel: PropTypes.string,
         version: PropTypes.number,
-        roles: PropTypes.arrayOf(PropTypes.string.isRequired),
     }),
     isReadOnly: PropTypes.bool.isRequired,
     dataLocale: PropTypes.string.isRequired,

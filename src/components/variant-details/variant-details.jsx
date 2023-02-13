@@ -83,6 +83,7 @@ const VariantDetails = (props) => {
                 onSubmit={handleSubmit}
                 isReadOnly={!canManage}
                 dataLocale={dataLocale}
+                key={variantId}
             >
                 {(formProps) => {
                     const variants = formProps.values.variants.concat(formProps.values.masterVariant);

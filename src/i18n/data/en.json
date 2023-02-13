@@ -4,5 +4,7 @@
   "Products.noResults": "There are no products available in this project.",
   "ProductDetails.changeVariantImage": "Change Image",
   "ProductDetails.productKeyLabel": "Product key",
-  "ProductDetails.productNameLabel": "Product name"
+  "ProductDetails.productNameLabel": "Product name",
+
+  "VariantDetails.variantImageLabel": "Label"
 }
