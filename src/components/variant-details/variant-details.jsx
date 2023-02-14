@@ -12,12 +12,15 @@ import {useApplicationContext} from "@commercetools-frontend/application-shell-c
 import {useIsAuthorized} from "@commercetools-frontend/permissions";
 import {PERMISSIONS} from "../../constants";
 import {useShowApiErrorNotification, useShowNotification} from "@commercetools-frontend/actions-global";
-import {formatLocalizedString} from "@commercetools-frontend/l10n";
 import {DOMAINS, NO_VALUE_FALLBACK} from "@commercetools-frontend/constants";
 import {
-    useProductDetailsUpdater,
     useProductDetailsFetcher,
 } from '../../hooks/use-products-connector/use-products-connector';
+import {
+    useVariantImagesDeleter,
+    useVariantDetailsUpdater
+} from '../../hooks/use-variants-connector/use-variants-connector';
+
 import {docToFormValues, formValuesToDoc} from "./conversions";
 import {useCallback} from "react";
 import {transformErrors} from "./transform-errors";
@@ -37,15 +40,31 @@ const VariantDetails = (props) => {
     });
     const showNotification = useShowNotification();
     const showApiErrorNotification = useShowApiErrorNotification();
-    const variantDetailsUpdater = useProductDetailsUpdater();
+    const variantDetailsUpdater = useVariantDetailsUpdater();
 
     const handleSubmit = useCallback(
         async (formikValues, formikHelpers) => {
             const data = formValuesToDoc(formikValues);
+            let convertData = [];
+            Object.keys(data).forEach(key => {
+                if (key !== 'masterVariant' && key !== 'variants' && key !== 'version') {
+                    convertData.push(
+                        {
+                            changeImageLabel: {
+                                imageUrl: key.replaceAll(',', '.'),
+                                label: data[key],
+                                variantId: parseInt(variantId)
+                            }
+                        }
+                    )
+                }
+            });
+            console.log(convertData);
+
             try {
                 await variantDetailsUpdater.execute({
                     originalDraft: product,
-                    nextDraft: data,
+                    nextDraft: convertData,
                 });
                 showNotification({
                     kind: 'success',

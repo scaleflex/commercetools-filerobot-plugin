@@ -2,6 +2,7 @@ query FetchProductDetails($productId: String!) {
   product(id: $productId) {
     id
     key
+    version
     masterData {
       staged {
         nameAllLocales {

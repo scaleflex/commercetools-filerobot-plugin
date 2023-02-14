@@ -5,14 +5,18 @@ import Spacings from '@commercetools-uikit/spacings';
 import Grid from '@commercetools-uikit/grid';
 import validate from './validate';
 import messages from './messages';
-import {useDataTableSortingState} from "@commercetools-uikit/hooks";
-import {useApplicationContext} from "@commercetools-frontend/application-shell-connectors";
-import {Switch, useHistory, useParams, useRouteMatch} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import SecondaryButton from '@commercetools-uikit/secondary-button';
 import { PlusThinIcon, BinLinearIcon } from '@commercetools-uikit/icons';
 import TextField from '@commercetools-uikit/text-field';
-import styles from './variant-style.css';
+import './variant-style.css';
 import IconButton from '@commercetools-uikit/icon-button';
+import CheckboxInput from '@commercetools-uikit/checkbox-input';
+import {DOMAINS} from "@commercetools-frontend/constants";
+import {transformErrors} from "./transform-errors";
+import {useShowApiErrorNotification, useShowNotification} from "@commercetools-frontend/actions-global";
+import {useVariantDetailsUpdater} from "../../hooks/use-variants-connector/use-variants-connector";
+import {formValuesToDoc} from "./conversions";
 
 const VariantDetailsForm = (props) => {
     const intl = useIntl();
@@ -22,14 +26,10 @@ const VariantDetailsForm = (props) => {
         validate,
         enableReinitialize: true,
     });
-    const match = useRouteMatch();
     const params = useParams();
-    const { push } = useHistory();
-    const tableSorting = useDataTableSortingState({ key: 'key', order: 'asc' });
-    const { dataLocale, projectLanguages } = useApplicationContext((context) => ({
-        dataLocale: context.dataLocale,
-        projectLanguages: context.project.languages,
-    }));
+    const showNotification = useShowNotification();
+    const showApiErrorNotification = useShowApiErrorNotification();
+    const variantDetailsUpdater = useVariantDetailsUpdater();
 
     const variants = formik.values.variants.concat(formik.values.masterVariant);
     const variantId = parseInt(params.variantId);
@@ -40,8 +40,8 @@ const VariantDetailsForm = (props) => {
             break;
         }
     }
-    const images = variant.images;
 
+    const images = variant.images;
     const formElements = (
         <Spacings.Stack scale="xl">
             <div className={"variantHeader"}>
@@ -57,7 +57,7 @@ const VariantDetailsForm = (props) => {
                         <Grid
                             gridGap="8px"
                             gridTemplateColumns="0fr 20fr"
-                            className={"imageInfo"}
+                            className={"imageInfo variantKey-" + index.toString()}
                         >
                             <Grid.Item>
                                 <div className={"imageContainer"} >
@@ -74,7 +74,7 @@ const VariantDetailsForm = (props) => {
                                     <Grid.Item>
                                         <div className={"imageLabel"}>
                                             <TextField
-                                                name="imageLabel"
+                                                name={image.url.replaceAll('.', ',')}
                                                 title={intl.formatMessage(messages.variantImageLabel)}
                                                 value={image.label ?? ""}
                                                 touched={formik.touched.key}
@@ -85,7 +85,38 @@ const VariantDetailsForm = (props) => {
                                     </Grid.Item>
                                     <Grid.Item>
                                         <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                                            <IconButton icon={<BinLinearIcon />} label={"Deleted Image"} onClick={() => alert('Deleted image variant')}/>
+                                            <IconButton icon={<BinLinearIcon />} label={"Deleted Image"} onClick={async () => {
+                                                if (window.confirm("Do you want delete it?")) {
+                                                    let convertData = [
+                                                        {
+                                                            removeImage: {
+                                                                imageUrl: image.url,
+                                                                variantId: variantId
+                                                            }
+                                                        }
+                                                    ];
+                                                    try {
+                                                        await variantDetailsUpdater.execute({
+                                                            originalDraft: formik.values,
+                                                            nextDraft: convertData,
+                                                        });
+                                                        showNotification({
+                                                            kind: 'success',
+                                                            domain: DOMAINS.SIDE,
+                                                            text: intl.formatMessage(messages.variantUpdated, {
+                                                                variantSku: formik.values.variants.sku
+                                                            }),
+                                                        });
+                                                    } catch (graphQLErrors) {
+                                                        const transformedErrors = transformErrors(graphQLErrors);
+                                                        if (transformedErrors.unmappedErrors.length > 0) {
+                                                            showApiErrorNotification({
+                                                                errors: transformedErrors.unmappedErrors,
+                                                            });
+                                                        }
+                                                    }
+                                                }
+                                            }}/>
                                         </div>
                                     </Grid.Item>
                                 </Grid>

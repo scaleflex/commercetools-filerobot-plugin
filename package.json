@@ -35,6 +35,7 @@
     "@commercetools-test-data/channel": "4.1.1",
     "@commercetools-test-data/commons": "4.1.1",
     "@commercetools-test-data/core": "4.1.1",
+    "@commercetools-uikit/checkbox-input": "^15.11.2",
     "@commercetools-uikit/constraints": "^15.3.0",
     "@commercetools-uikit/data-table": "^15.3.0",
     "@commercetools-uikit/flat-button": "^15.3.0",

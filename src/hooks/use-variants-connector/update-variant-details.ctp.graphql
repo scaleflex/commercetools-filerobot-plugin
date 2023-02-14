@@ -1,0 +1,37 @@
+mutation UpdateProduct($id: String!, $version: Long!, $actions: [ProductUpdateAction!]!) {
+    updateProduct(id: $id, version: $version, actions: $actions) {
+        id
+        version
+        masterData {
+            staged {
+                nameAllLocales {
+                    locale
+                    value
+                    __typename
+                }
+                masterVariant {
+                    ...variant
+                    __typename
+                }
+                variants {
+                    ...variant
+                    __typename
+                }
+                __typename
+            }
+            __typename
+        }
+        __typename
+    }
+}
+
+fragment variant on ProductVariant {
+    id
+    sku
+    images {
+        url
+        label
+        __typename
+    }
+    __typename
+}
