@@ -40,6 +40,13 @@ const config = {
       permissions: [PERMISSIONS.View],
     },
   ],
+  headers: {
+    csp: {
+      "connect-src": ["https://i18n.ultrafast.io", "https://*.filerobot.com"],
+      "frame-src": ["https://js.stripe.com", "https://hooks.stripe.com"],
+      "script-src": ["https://js.stripe.com"]
+    }
+  }
 };
 
 export default config;

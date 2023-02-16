@@ -37,7 +37,7 @@ const ProductDetailsForm = (props) => {
     const itemRenderer = (item, column, dataLocale, projectLanguages) => {
         switch (column.key) {
             case 'images':
-                return <img src={item[column.key][0].url} alt="" style={{ maxWidth: 200, maxHeight: 100 }}/>;
+                return <img src={item[column.key][0]?.url} alt="" style={{ maxWidth: 200, maxHeight: 100 }}/>;
             default:
                 return item[column.key];
         }

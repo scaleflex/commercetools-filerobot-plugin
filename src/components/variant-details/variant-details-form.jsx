@@ -5,18 +5,16 @@ import Spacings from '@commercetools-uikit/spacings';
 import Grid from '@commercetools-uikit/grid';
 import validate from './validate';
 import messages from './messages';
-import {useParams} from "react-router-dom";
-import SecondaryButton from '@commercetools-uikit/secondary-button';
-import { PlusThinIcon, BinLinearIcon } from '@commercetools-uikit/icons';
+import {useHistory, useParams, useRouteMatch} from "react-router-dom";
+import {BinLinearIcon } from '@commercetools-uikit/icons';
 import TextField from '@commercetools-uikit/text-field';
 import './variant-style.css';
 import IconButton from '@commercetools-uikit/icon-button';
-import CheckboxInput from '@commercetools-uikit/checkbox-input';
 import {DOMAINS} from "@commercetools-frontend/constants";
 import {transformErrors} from "./transform-errors";
 import {useShowApiErrorNotification, useShowNotification} from "@commercetools-frontend/actions-global";
 import {useVariantDetailsUpdater} from "../../hooks/use-variants-connector/use-variants-connector";
-import {formValuesToDoc} from "./conversions";
+import FilerobotFormModal from "../filerobot/filerobot";
 
 const VariantDetailsForm = (props) => {
     const intl = useIntl();
@@ -42,12 +40,9 @@ const VariantDetailsForm = (props) => {
     }
 
     const images = variant.images;
-    const formElements = (
-        <Spacings.Stack scale="xl">
-            <div className={"variantHeader"}>
-                <h2>Images</h2>
-                <SecondaryButton iconLeft={<PlusThinIcon />} label="Add image" onClick={() => alert('Button clicked')} />
-            </div>
+    let gridView;
+    if (images.length) {
+        gridView = (
             <Grid
                 gridGap="16px"
                 gridTemplateColumns="repeat(2, 1fr)"
@@ -125,6 +120,16 @@ const VariantDetailsForm = (props) => {
                     </Grid.Item>
                 ))}
             </Grid>
+        );
+    }
+
+    const formElements = (
+        <Spacings.Stack scale="xl">
+            <div className={"variantHeader"}>
+                <h2>Images</h2>
+                <FilerobotFormModal />
+            </div>
+            {gridView}
         </Spacings.Stack>
     );
 
@@ -151,3 +156,42 @@ VariantDetailsForm.propTypes = {
 };
 
 export default VariantDetailsForm;
+
+
+// let convertData = [
+//     {
+//         addExternalImage: {
+//             image: {
+//                 url: "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/gettyimages-1058360160-1-1624796189.jpg",
+//                 label: "",
+//                 dimensions: {
+//                     width: 723,
+//                     height: 482
+//                 }
+//             },
+//             staged: true,
+//             sku: formik.values.variants.sku,
+//             variantId: variantId
+//         }
+//     }
+// ];
+// try {
+//     await variantDetailsUpdater.execute({
+//         originalDraft: formik.values,
+//         nextDraft: convertData,
+//     });
+//     showNotification({
+//         kind: 'success',
+//         domain: DOMAINS.SIDE,
+//         text: intl.formatMessage(messages.variantUpdated, {
+//             variantSku: formik.values.variants.sku
+//         }),
+//     });
+// } catch (graphQLErrors) {
+//     const transformedErrors = transformErrors(graphQLErrors);
+//     if (transformedErrors.unmappedErrors.length > 0) {
+//         showApiErrorNotification({
+//             errors: transformedErrors.unmappedErrors,
+//         });
+//     }
+// }
