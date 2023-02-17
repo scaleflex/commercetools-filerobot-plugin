@@ -4,8 +4,10 @@ import {PlusThinIcon} from "@commercetools-uikit/icons";
 import messages from "../variant-details/messages";
 import Spacings from "@commercetools-uikit/spacings";
 import FilerobotDAM from "./filerobot-dam";
+import PropTypes from "prop-types";
+import VariantDetailsForm from "../variant-details/variant-details-form";
 
-const FilerobotFormModal = () => {
+const FilerobotFormModal = (props) => {
     const pageModalState = useModalState();
 
     return (
@@ -19,10 +21,18 @@ const FilerobotFormModal = () => {
                 topBarPreviousPathLabel={messages.backToForm}
             >
                 <div id={"filerobot-widget"}>Loading...</div>
-                <FilerobotDAM />
+                <FilerobotDAM productId={props.productId} variantId={props.variantId} variant={props.variant} sku={props.sku} product={props.product}/>
             </InfoModalPage>
         </Spacings.Stack>
     );
 }
 
+FilerobotFormModal.propTypes = {
+    productId: PropTypes.string.isRequired,
+    sku: PropTypes.string.isRequired,
+    product: PropTypes.object.isRequired,
+    variantId: PropTypes.string.isRequired,
+    variant: PropTypes.object.isRequired
+};
 export default FilerobotFormModal;
+

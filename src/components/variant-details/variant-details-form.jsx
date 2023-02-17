@@ -99,7 +99,7 @@ const VariantDetailsForm = (props) => {
                                                             kind: 'success',
                                                             domain: DOMAINS.SIDE,
                                                             text: intl.formatMessage(messages.variantUpdated, {
-                                                                variantSku: formik.values.variants.sku
+                                                                variantSku: variant.sku
                                                             }),
                                                         });
                                                     } catch (graphQLErrors) {
@@ -127,7 +127,7 @@ const VariantDetailsForm = (props) => {
         <Spacings.Stack scale="xl">
             <div className={"variantHeader"}>
                 <h2>Images</h2>
-                <FilerobotFormModal />
+                <FilerobotFormModal productId={formik.values.id} variantId={variantId.toString()} variant={variant} sku={variant.sku} product={formik.values}/>
             </div>
             {gridView}
         </Spacings.Stack>
@@ -156,42 +156,3 @@ VariantDetailsForm.propTypes = {
 };
 
 export default VariantDetailsForm;
-
-
-// let convertData = [
-//     {
-//         addExternalImage: {
-//             image: {
-//                 url: "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/gettyimages-1058360160-1-1624796189.jpg",
-//                 label: "",
-//                 dimensions: {
-//                     width: 723,
-//                     height: 482
-//                 }
-//             },
-//             staged: true,
-//             sku: formik.values.variants.sku,
-//             variantId: variantId
-//         }
-//     }
-// ];
-// try {
-//     await variantDetailsUpdater.execute({
-//         originalDraft: formik.values,
-//         nextDraft: convertData,
-//     });
-//     showNotification({
-//         kind: 'success',
-//         domain: DOMAINS.SIDE,
-//         text: intl.formatMessage(messages.variantUpdated, {
-//             variantSku: formik.values.variants.sku
-//         }),
-//     });
-// } catch (graphQLErrors) {
-//     const transformedErrors = transformErrors(graphQLErrors);
-//     if (transformedErrors.unmappedErrors.length > 0) {
-//         showApiErrorNotification({
-//             errors: transformedErrors.unmappedErrors,
-//         });
-//     }
-// }

@@ -59,7 +59,6 @@ const VariantDetails = (props) => {
                     )
                 }
             });
-            console.log(convertData);
 
             try {
                 await variantDetailsUpdater.execute({

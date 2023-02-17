@@ -68,12 +68,7 @@ export const useVariantDetailsUpdater = () => {
         UpdateVariantDetailsMutation
     );
 
-    const syncStores = createSyncProducts();
     const execute = async ({ originalDraft, nextDraft }) => {
-        const actions = syncStores.buildActions(
-            nextDraft,
-            convertToActionData(originalDraft)
-        );
         try {
             return await updateVariantDetails({
                 context: {
