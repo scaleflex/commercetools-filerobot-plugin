@@ -5,7 +5,6 @@ import messages from "../variant-details/messages";
 import Spacings from "@commercetools-uikit/spacings";
 import FilerobotDAM from "./filerobot-dam";
 import PropTypes from "prop-types";
-import VariantDetailsForm from "../variant-details/variant-details-form";
 
 const FilerobotFormModal = (props) => {
     const pageModalState = useModalState();

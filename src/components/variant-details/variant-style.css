@@ -5,6 +5,7 @@
     height: 120px;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
 }
 
 .imageContainer img {

@@ -3,7 +3,6 @@ import {useFormik} from 'formik';
 import {useIntl} from 'react-intl';
 import Spacings from '@commercetools-uikit/spacings';
 import validate from './validate';
-import messages from './messages';
 import DataTable from '@commercetools-uikit/data-table';
 import {useDataTableSortingState} from "@commercetools-uikit/hooks";
 import {useApplicationContext} from "@commercetools-frontend/application-shell-connectors";
@@ -12,7 +11,6 @@ import {SuspendedRoute} from "@commercetools-frontend/application-shell";
 import VariantDetails from "../variant-details/variant-details";
 
 const ProductDetailsForm = (props) => {
-    const intl = useIntl();
     const formik = useFormik({
         initialValues: props.initialValues,
         onSubmit: props.onSubmit,
@@ -43,7 +41,7 @@ const ProductDetailsForm = (props) => {
         }
     };
 
-    const allVariants = formik.values.variants.concat(formik.values.masterVariant);
+    const allVariants = formik.values.allVariants;
     const formElements = (
         <Spacings.Stack scale="xl">
             <h3>Variants</h3>
@@ -69,24 +67,12 @@ const ProductDetailsForm = (props) => {
     );
 
     return props.children({
-        formElements,
-        values: formik.values,
-        isDirty: formik.dirty,
-        isSubmitting: formik.isSubmitting,
-        submitForm: formik.handleSubmit,
-        handleReset: formik.handleReset,
+        formElements
     });
 };
 ProductDetailsForm.displayName = 'ProductDetailsForm';
 ProductDetailsForm.propTypes = {
-    onSubmit: PropTypes.func.isRequired,
-    initialValues: PropTypes.shape({
-        id: PropTypes.string,
-        key: PropTypes.string,
-        version: PropTypes.number,
-    }),
-    isReadOnly: PropTypes.bool.isRequired,
-    dataLocale: PropTypes.string.isRequired,
+    initialValues: PropTypes.object.isRequired,
 };
 
 export default ProductDetailsForm;

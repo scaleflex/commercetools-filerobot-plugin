@@ -17,12 +17,11 @@ import {
     useProductDetailsFetcher,
 } from '../../hooks/use-products-connector/use-products-connector';
 import {
-    useVariantImagesDeleter,
     useVariantDetailsUpdater
 } from '../../hooks/use-variants-connector/use-variants-connector';
 
 import {docToFormValues, formValuesToDoc} from "./conversions";
-import {useCallback} from "react";
+import {useCallback, useState} from "react";
 import {transformErrors} from "./transform-errors";
 import VariantDetailsForm from "./variant-details-form";
 
@@ -41,13 +40,24 @@ const VariantDetails = (props) => {
     const showNotification = useShowNotification();
     const showApiErrorNotification = useShowApiErrorNotification();
     const variantDetailsUpdater = useVariantDetailsUpdater();
+    const [primaryButton, setPrimaryButton] = useState(true);
+    const [secondaryButton, setSecondaryButton] = useState(true);
+
+    const variants = product?.masterData.staged.allVariants;
+    let variantSku;
+    for (let i = 0; i < variants.length; i++) {
+        if (parseInt(variants[i].id) === parseInt(variantId)) {
+            variantSku = variants[i].sku;
+            break;
+        }
+    }
 
     const handleSubmit = useCallback(
         async (formikValues, formikHelpers) => {
             const data = formValuesToDoc(formikValues);
             let convertData = [];
             Object.keys(data).forEach(key => {
-                if (key !== 'masterVariant' && key !== 'variants' && key !== 'version') {
+                if (key !== 'allVariants' && key !== 'version' && key !== 'id') {
                     convertData.push(
                         {
                             changeImageLabel: {
@@ -69,9 +79,10 @@ const VariantDetails = (props) => {
                     kind: 'success',
                     domain: DOMAINS.SIDE,
                     text: intl.formatMessage(messages.variantUpdated, {
-                        variantSku: data.variants.sku
+                        "variantSku": variantSku
                     }),
                 });
+                setPrimaryButton(true);
             } catch (graphQLErrors) {
                 const transformedErrors = transformErrors(graphQLErrors);
                 if (transformedErrors.unmappedErrors.length > 0) {
@@ -94,34 +105,28 @@ const VariantDetails = (props) => {
         ]
     );
 
+    let initialValues = docToFormValues(product, projectLanguages);
     return (
         <Spacings.Stack scale="xl">
             <VariantDetailsForm
-                initialValues={docToFormValues(product, projectLanguages)}
+                initialValues={initialValues}
                 onSubmit={handleSubmit}
                 isReadOnly={!canManage}
                 dataLocale={dataLocale}
                 key={variantId}
+                primaryButton={setPrimaryButton}
+                secondaryButton={setSecondaryButton}
             >
                 {(formProps) => {
-                    const variants = formProps.values.variants.concat(formProps.values.masterVariant);
-                    let variantName;
-                    for (let i = 0; i < variants.length; i++) {
-                        if (parseInt(variants[i].id) === parseInt(variantId)) {
-                            variantName = variants[i].sku;
-                            break;
-                        }
-                    }
-
                     return (
                         <FormModalPage
-                            title={variantName}
+                            title={variantSku}
                             isOpen
                             onClose={props.onClose}
                             isPrimaryButtonDisabled={
-                                formProps.isSubmitting || !formProps.isDirty || !canManage
+                                primaryButton
                             }
-                            isSecondaryButtonDisabled={!formProps.isDirty}
+                            isSecondaryButtonDisabled={secondaryButton}
                             onSecondaryButtonClick={formProps.handleReset}
                             onPrimaryButtonClick={formProps.submitForm}
                             labelPrimaryButton={FormModalPage.Intl.save}
@@ -141,7 +146,7 @@ const VariantDetails = (props) => {
                             )}
                             {product && formProps.formElements}
                             {product && (
-                                <ApplicationPageTitle additionalParts={[variantName]} />
+                                <ApplicationPageTitle additionalParts={[variantSku]} />
                             )}
                             {product === null && <PageNotFound />}
                         </FormModalPage>

@@ -7,13 +7,11 @@ export const docToFormValues = (product, languages) => ({
         transformLocalizedFieldToLocalizedString(product?.masterData.staged.nameAllLocales ?? [])
     ),
     key: product?.key ?? '',
-    variants: product?.masterData.staged.variants ?? [],
-    masterVariant: product?.masterData.staged.masterVariant ?? []
+    allVariants: product?.masterData.staged.allVariants ?? []
 });
 
 export const formValuesToDoc = (formValues) => ({
     name: LocalizedTextInput.omitEmptyTranslations(formValues.name),
     key: formValues.key,
-    variants: formValues.variants,
-    masterVariant: formValues.masterVariant
+    allVariants: formValues.allVariants
 });

@@ -1,5 +1,3 @@
-import TextInput from '@commercetools-uikit/text-input';
-import LocalizedTextInput from '@commercetools-uikit/localized-text-field';
 import omitEmpty from 'omit-empty-es';
 
 const validate = (formikValues) => {

@@ -11,16 +11,12 @@ import {useParams} from "react-router-dom";
 import {useApplicationContext} from "@commercetools-frontend/application-shell-connectors";
 import {useIsAuthorized} from "@commercetools-frontend/permissions";
 import {PERMISSIONS} from "../../constants";
-import {useShowApiErrorNotification, useShowNotification} from "@commercetools-frontend/actions-global";
-import {formatLocalizedString} from "@commercetools-frontend/l10n";
-import {DOMAINS, NO_VALUE_FALLBACK} from "@commercetools-frontend/constants";
+import {formatLocalizedString, transformLocalizedFieldToLocalizedString} from "@commercetools-frontend/l10n";
+import {NO_VALUE_FALLBACK} from "@commercetools-frontend/constants";
 import {
-    useProductDetailsUpdater,
     useProductDetailsFetcher,
 } from '../../hooks/use-products-connector/use-products-connector';
 import {docToFormValues, formValuesToDoc} from "./conversions";
-import {useCallback} from "react";
-import {transformErrors} from "./transform-errors";
 import ProductDetailsForm from "./product-details-form";
 
 const ProductDetails = (props) => {
@@ -34,63 +30,15 @@ const ProductDetails = (props) => {
     const canManage = useIsAuthorized({
         demandedPermissions: [PERMISSIONS.Manage],
     });
-    const showNotification = useShowNotification();
-    const showApiErrorNotification = useShowApiErrorNotification();
-    const productDetailsUpdater = useProductDetailsUpdater();
-    const handleSubmit = useCallback(
-        async (formikValues, formikHelpers) => {
-            const data = formValuesToDoc(formikValues);
-            try {
-                await productDetailsUpdater.execute({
-                    originalDraft: product,
-                    nextDraft: data,
-                });
-                showNotification({
-                    kind: 'success',
-                    domain: DOMAINS.SIDE,
-                    text: intl.formatMessage(messages.productUpdated, {
-                        productName: formatLocalizedString(formikValues, {
-                            key: 'name',
-                            locale: dataLocale,
-                            fallbackOrder: projectLanguages,
-                        }),
-                    }),
-                });
-            } catch (graphQLErrors) {
-                const transformedErrors = transformErrors(graphQLErrors);
-                if (transformedErrors.unmappedErrors.length > 0) {
-                    showApiErrorNotification({
-                        errors: transformedErrors.unmappedErrors,
-                    });
-                }
-
-                formikHelpers.setErrors(transformedErrors.formErrors);
-            }
-        },
-        [
-            product,
-            productDetailsUpdater,
-            dataLocale,
-            intl,
-            projectLanguages,
-            showApiErrorNotification,
-            showNotification,
-        ]
-    );
 
     return (
         <Spacings.Stack scale="xl">
             <ProductDetailsForm
                 initialValues={docToFormValues(product, projectLanguages)}
-                onSubmit={handleSubmit}
-                isReadOnly={!canManage}
-                dataLocale={dataLocale}
             >
                 {(formProps) => {
                     const productName = formatLocalizedString(
-                        {
-                            name: formProps.values?.name,
-                        },
+                        { name: transformLocalizedFieldToLocalizedString(product?.masterData.staged.nameAllLocales) },
                         {
                             key: 'name',
                             locale: dataLocale,

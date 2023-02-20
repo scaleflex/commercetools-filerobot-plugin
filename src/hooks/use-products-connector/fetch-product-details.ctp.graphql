@@ -28,6 +28,16 @@ query FetchProductDetails($productId: String!) {
           sku,
           key
         }
+        allVariants {
+          id,
+          images {
+            url,
+            label,
+            dimensions {width, height}
+          },
+          sku,
+          key
+        }
       }
     }
   }

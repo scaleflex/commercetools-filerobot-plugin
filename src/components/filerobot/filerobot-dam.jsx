@@ -38,16 +38,28 @@ const FilerobotDAM = (props) => {
                 resetAfterClose: true,
                 dismissUrlPathQueryUpdate: true,
                 hideSearch: true,
+                locale: {
+                    strings: {
+                        mutualizedExportButtonLabel: intl.formatMessage(messages.exportLabel),
+                        mutualizedDownloadButton: intl.formatMessage(messages.exportLabel),
+                    }
+                },
             })
             .use(XHRUpload)
             .on('export', async (files, popupExportSuccessMsgFn, downloadFilesPackagedFn, downloadFileFn) => {
                 for (const selected of files) {
-                    console.log(selected);
+                    // console.log(selected);
+                    let filerobotURL = selected.file.url.cdn;
+                    let newFilerobotUrl = new URL(filerobotURL);
+                    if (newFilerobotUrl.searchParams.has('vh')) {
+                        newFilerobotUrl.searchParams.delete('vh');
+                    }
+                    filerobotURL = newFilerobotUrl.href;
                     let convertData = [
                         {
                             addExternalImage: {
                                 image: {
-                                    url: selected.file.url.cdn,
+                                    url: filerobotURL,
                                     label: "",
                                     dimensions: {
                                         width: selected.file.info.img_w,
@@ -80,11 +92,11 @@ const FilerobotDAM = (props) => {
                         }
                     }
                 }
+                location.reload();
             })
             .on('complete', async ({ failed, uploadID, successful }) => {
 
             });
-
         return () => {
             filerobot.current.close();
         }

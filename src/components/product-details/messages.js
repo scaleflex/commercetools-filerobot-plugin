@@ -42,5 +42,9 @@ export default defineMessages({
   changeVariantImage: {
     id: 'ProductDetails.changeVariantImage',
     defaultMessage: 'Change Image'
+  },
+  back: {
+    id: 'ProductDetails.back',
+    defaultMessage: 'Back'
   }
 });
