@@ -55,8 +55,8 @@ const ProductDetails = (props) => {
                                 formProps.isSubmitting || !formProps.isDirty || !canManage
                             }
                             isSecondaryButtonDisabled={!formProps.isDirty}
-                            onSecondaryButtonClick={formProps.handleReset}
-                            onPrimaryButtonClick={formProps.submitForm}
+                            onSecondaryButtonClick={(e) => {return false;}}
+                            onPrimaryButtonClick={(e) => {return false;}}
                             labelPrimaryButton={FormModalPage.Intl.save}
                             labelSecondaryButton={FormModalPage.Intl.revert}
                         >

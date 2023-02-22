@@ -1,0 +1,8 @@
+{
+  "configFilerobot": {
+    "token": "",
+    "cname": "",
+    "sec": "",
+    "uploadDirectory": ""
+  }
+}
