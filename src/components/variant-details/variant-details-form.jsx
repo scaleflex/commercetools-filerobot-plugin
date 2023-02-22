@@ -122,6 +122,9 @@ const VariantDetailsForm = (props) => {
                                                                 variantSku: variant.sku
                                                             }),
                                                         });
+                                                        setTimeout(function () {
+                                                            location.reload();
+                                                        }, 500);
                                                     } catch (graphQLErrors) {
                                                         const transformedErrors = transformErrors(graphQLErrors);
                                                         if (transformedErrors.unmappedErrors.length > 0) {

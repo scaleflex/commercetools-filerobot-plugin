@@ -11,6 +11,7 @@ import {useVariantDetailsUpdater} from "../../hooks/use-variants-connector/use-v
 import {useIntl} from "react-intl";
 import {DOMAINS} from "@commercetools-frontend/constants";
 import {transformErrors} from "./transform-errors";
+import filerobotConfig from "../../filerobot-config.json";
 
 const FilerobotDAM = (props) => {
     const filerobot = useRef(null);
@@ -21,12 +22,12 @@ const FilerobotDAM = (props) => {
 
     useEffect(() => {
         filerobot.current = Filerobot({
-            securityTemplateID : 'SECU_53CA06BC35B94787B4F8F0EEA7E923E5',
-            container          : 'fkklnkdm'
+            securityTemplateID : filerobotConfig.configFilerobot.sec,
+            container          : filerobotConfig.configFilerobot.token
         })
             .use(Explorer, {
                 config: {
-                    rootFolderPath: '/wp_demo'
+                    rootFolderPath: filerobotConfig.configFilerobot.uploadDirectory
                 },
                 target: '#filerobot-widget',
                 inline: true,
@@ -54,6 +55,12 @@ const FilerobotDAM = (props) => {
                     if (newFilerobotUrl.searchParams.has('vh')) {
                         newFilerobotUrl.searchParams.delete('vh');
                     }
+
+                    if (filerobotConfig.configFilerobot.cname !== '') {
+                        newFilerobotUrl.host = filerobotConfig.configFilerobot.cname;
+                        newFilerobotUrl.hostname = filerobotConfig.configFilerobot.cname;
+                    }
+
                     filerobotURL = newFilerobotUrl.href;
                     let convertData = [
                         {
@@ -92,7 +99,9 @@ const FilerobotDAM = (props) => {
                         }
                     }
                 }
-                location.reload();
+                setTimeout(function () {
+                    location.reload();
+                }, 500);
             })
             .on('complete', async ({ failed, uploadID, successful }) => {
 
