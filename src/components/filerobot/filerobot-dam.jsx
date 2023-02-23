@@ -48,6 +48,7 @@ const FilerobotDAM = (props) => {
             })
             .use(XHRUpload)
             .on('export', async (files, popupExportSuccessMsgFn, downloadFilesPackagedFn, downloadFileFn) => {
+                let version = props.product.version;
                 for (const selected of files) {
                     // console.log(selected);
                     let filerobotURL = selected.file.url.cdn;
@@ -83,13 +84,7 @@ const FilerobotDAM = (props) => {
                             originalDraft: props.product,
                             nextDraft: convertData,
                         });
-                        showNotification({
-                            kind: 'success',
-                            domain: DOMAINS.SIDE,
-                            text: intl.formatMessage(messages.variantUpdated, {
-                                variantSku: props.sku
-                            }),
-                        });
+                        props.product.version = parseInt(version) + 1;
                     } catch (graphQLErrors) {
                         const transformedErrors = transformErrors(graphQLErrors);
                         if (transformedErrors.unmappedErrors.length > 0) {
@@ -99,9 +94,19 @@ const FilerobotDAM = (props) => {
                         }
                     }
                 }
+
+                showNotification({
+                    kind: 'success',
+                    domain: DOMAINS.SIDE,
+                    text: intl.formatMessage(messages.variantUpdated, {
+                        variantSku: props.sku
+                    }),
+                });
+
                 setTimeout(function () {
                     location.reload();
                 }, 500);
+
             })
             .on('complete', async ({ failed, uploadID, successful }) => {
 
