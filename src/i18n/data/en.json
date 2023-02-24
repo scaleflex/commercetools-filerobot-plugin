@@ -8,5 +8,7 @@
   "VariantDetails.variantImageLabel": "Label",
   "VariantDetails.backToForm": "Back",
   "Filerobot.exportLabel": "Export",
-  "Filerobot.variantUpdated": "Variant {variantSku} updated"
+  "Filerobot.variantUpdated": "Variant {variantSku} updated",
+  "Filerobot.errorFileType": "Variant image is not support file {type}",
+  "Filerobot.variantUpdateFail": "Variant {variantSku} has been failed to update"
 }

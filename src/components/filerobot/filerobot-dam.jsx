@@ -49,64 +49,95 @@ const FilerobotDAM = (props) => {
             .use(XHRUpload)
             .on('export', async (files, popupExportSuccessMsgFn, downloadFilesPackagedFn, downloadFileFn) => {
                 let version = props.product.version;
+                /**
+                 * Check input file type
+                 * Accept file type: jpg, jpeg, png, svg, gif, bmp, tiff
+                 */
+                let checkError = false;
                 for (const selected of files) {
-                    // console.log(selected);
-                    let filerobotURL = selected.file.url.cdn;
-                    let newFilerobotUrl = new URL(filerobotURL);
-                    if (newFilerobotUrl.searchParams.has('vh')) {
-                        newFilerobotUrl.searchParams.delete('vh');
-                    }
-
-                    if (filerobotConfig.configFilerobot.cname !== '') {
-                        newFilerobotUrl.host = filerobotConfig.configFilerobot.cname;
-                        newFilerobotUrl.hostname = filerobotConfig.configFilerobot.cname;
-                    }
-
-                    filerobotURL = newFilerobotUrl.href;
-                    let convertData = [
-                        {
-                            addExternalImage: {
-                                image: {
-                                    url: filerobotURL,
-                                    label: "",
-                                    dimensions: {
-                                        width: selected.file.info.img_w,
-                                        height: selected.file.info.img_h
-                                    }
-                                },
-                                staged: true,
-                                variantId: parseInt(props.variantId)
-                            }
-                        }
-                    ];
-                    try {
-                        await variantDetailsUpdater.execute({
-                            originalDraft: props.product,
-                            nextDraft: convertData,
+                    if (selected.file.extension !== 'jpg' && selected.file.extension !== 'jpeg'
+                        && selected.file.extension !== 'png' && selected.file.extension !== 'svg'
+                        && selected.file.extension !== 'gif' && selected.file.extension !== 'bmp'
+                        && selected.file.extension !== 'tiff'
+                    ) {
+                        checkError = true;
+                        showNotification({
+                            kind: 'error',
+                            domain: DOMAINS.SIDE,
+                            text: intl.formatMessage(messages.errorFileType, {
+                                type: selected.file.extension
+                            }),
                         });
-                        props.product.version = parseInt(version) + 1;
-                    } catch (graphQLErrors) {
-                        const transformedErrors = transformErrors(graphQLErrors);
-                        if (transformedErrors.unmappedErrors.length > 0) {
-                            showApiErrorNotification({
-                                errors: transformedErrors.unmappedErrors,
-                            });
-                        }
                     }
                 }
 
-                showNotification({
-                    kind: 'success',
-                    domain: DOMAINS.SIDE,
-                    text: intl.formatMessage(messages.variantUpdated, {
-                        variantSku: props.sku
-                    }),
-                });
+                if (!checkError) {
+                    for (const selected of files) {
+                        // console.log(selected);
+                        let filerobotURL = selected.file.url.cdn;
+                        let newFilerobotUrl = new URL(filerobotURL);
+                        if (newFilerobotUrl.searchParams.has('vh')) {
+                            newFilerobotUrl.searchParams.delete('vh');
+                        }
 
-                setTimeout(function () {
-                    location.reload();
-                }, 500);
+                        if (filerobotConfig.configFilerobot.cname !== '') {
+                            newFilerobotUrl.host = filerobotConfig.configFilerobot.cname;
+                            newFilerobotUrl.hostname = filerobotConfig.configFilerobot.cname;
+                        }
 
+                        filerobotURL = newFilerobotUrl.href;
+                        let convertData = [
+                            {
+                                addExternalImage: {
+                                    image: {
+                                        url: filerobotURL,
+                                        label: "",
+                                        dimensions: {
+                                            width: selected.file.info.img_w,
+                                            height: selected.file.info.img_h
+                                        }
+                                    },
+                                    staged: true,
+                                    variantId: parseInt(props.variantId)
+                                }
+                            }
+                        ];
+                        try {
+                            await variantDetailsUpdater.execute({
+                                originalDraft: props.product,
+                                nextDraft: convertData,
+                            });
+                            props.product.version = parseInt(version) + 1;
+                        } catch (graphQLErrors) {
+                            const transformedErrors = transformErrors(graphQLErrors);
+                            if (transformedErrors.unmappedErrors.length > 0) {
+                                showApiErrorNotification({
+                                    errors: transformedErrors.unmappedErrors,
+                                });
+                            }
+                        }
+                    }
+
+                    showNotification({
+                        kind: 'success',
+                        domain: DOMAINS.SIDE,
+                        text: intl.formatMessage(messages.variantUpdated, {
+                            variantSku: props.sku
+                        }),
+                    });
+
+                    setTimeout(function () {
+                        location.reload();
+                    }, 500);
+                } else {
+                    showNotification({
+                        kind: 'error',
+                        domain: DOMAINS.SIDE,
+                        text: intl.formatMessage(messages.variantUpdateFail, {
+                            variantSku: props.sku
+                        }),
+                    });
+                }
             })
             .on('complete', async ({ failed, uploadID, successful }) => {
 
