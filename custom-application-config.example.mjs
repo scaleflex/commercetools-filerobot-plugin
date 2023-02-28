@@ -4,7 +4,7 @@ import { PERMISSIONS, entryPointUriPath } from './src/constants';
  * @type {import('@commercetools-frontend/application-config').ConfigOptions}
  */
 const config = {
-  name: 'Filerobot',
+  name: 'Filerobot by Scaleflex',
   entryPointUriPath,
   cloudIdentifier: 'gcp-eu',
   env: {
@@ -22,7 +22,7 @@ const config = {
   },
   icon: '${path:@commercetools-frontend/assets/application-icons/rocket.svg}',
   mainMenuLink: {
-    defaultLabel: 'Filerobot(Scaleflex)',
+    defaultLabel: 'Filerobot by Scaleflex',
     labelAllLocales: [],
     permissions: [PERMISSIONS.View],
   },
@@ -36,9 +36,9 @@ const config = {
   ],
   headers: {
     csp: {
-      "connect-src": ["https://i18n.ultrafast.io", "https://*.filerobot.com"],
-      "frame-src": ["https://js.stripe.com", "https://hooks.stripe.com"],
-      "script-src": ["https://js.stripe.com"]
+      "connect-src": ["https://i18n.ultrafast.io", "https://*.filerobot.com", "https://your_app_hostname.com"],
+      "frame-src": ["https://js.stripe.com", "https://hooks.stripe.com", "https://*.filerobot.com","https://your_app_hostname.com"],
+      "script-src": ["https://js.stripe.com", "https://*.filerobot.com","https://your_app_hostname.com"]
     }
   }
 };

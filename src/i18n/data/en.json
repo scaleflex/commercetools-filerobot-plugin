@@ -7,6 +7,7 @@
   "ProductDetails.productNameLabel": "Product name",
   "VariantDetails.variantImageLabel": "Label",
   "VariantDetails.backToForm": "Back",
+  "VariantDetails.variantUpdated": "Variant {variantSku} updated",
   "Filerobot.exportLabel": "Export",
   "Filerobot.variantUpdated": "Variant {variantSku} updated",
   "Filerobot.errorFileType": "Variant image is not support file {type}",

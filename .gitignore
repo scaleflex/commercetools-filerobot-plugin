@@ -5,3 +5,4 @@ dist
 .env.local
 custom-application-config.mjs
 src/filerobot-config.json
+public

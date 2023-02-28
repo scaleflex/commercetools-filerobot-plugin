@@ -122,9 +122,14 @@ const VariantDetailsForm = (props) => {
                                                                 variantSku: variant.sku
                                                             }),
                                                         });
-                                                        setTimeout(function () {
-                                                            location.reload();
-                                                        }, 500);
+                                                        let newImages = [];
+                                                        images.map((img, key) => {
+                                                            if (index !== key) {
+                                                                newImages.push(img);
+                                                            }
+                                                        });
+                                                        setImages(newImages);
+                                                        console.log(images);
                                                     } catch (graphQLErrors) {
                                                         const transformedErrors = transformErrors(graphQLErrors);
                                                         if (transformedErrors.unmappedErrors.length > 0) {
