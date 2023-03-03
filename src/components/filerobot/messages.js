@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'Filerobot.exportLabel',
     defaultMessage: 'Export',
   },
+  insertLabel: {
+    id: 'Filerobot.insertLabel',
+    defaultMessage: 'Insert',
+  },
   variantUpdateFail: {
     id: 'Filerobot.variantUpdateFail',
     defaultMessage: 'Variant {variantSku} has been failed to update',

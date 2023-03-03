@@ -9,6 +9,7 @@
   "VariantDetails.backToForm": "Back",
   "VariantDetails.variantUpdated": "Variant {variantSku} updated",
   "Filerobot.exportLabel": "Export",
+  "Filerobot.insertLabel": "Insert",
   "Filerobot.variantUpdated": "Variant {variantSku} updated",
   "Filerobot.errorFileType": "Variant image is not support file {type}",
   "Filerobot.variantUpdateFail": "Variant {variantSku} has been failed to update"

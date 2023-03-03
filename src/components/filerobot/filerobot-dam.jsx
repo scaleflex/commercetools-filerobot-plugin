@@ -41,8 +41,8 @@ const FilerobotDAM = (props) => {
                 hideSearch: true,
                 locale: {
                     strings: {
-                        mutualizedExportButtonLabel: intl.formatMessage(messages.exportLabel),
-                        mutualizedDownloadButton: intl.formatMessage(messages.exportLabel),
+                        mutualizedExportButtonLabel: intl.formatMessage(messages.insertLabel),
+                        mutualizedDownloadButton: intl.formatMessage(messages.insertLabel),
                     }
                 },
             })
