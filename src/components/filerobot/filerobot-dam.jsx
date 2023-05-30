@@ -3,6 +3,7 @@ import Explorer from "@filerobot/explorer";
 import XHRUpload from "@filerobot/xhr-upload";
 import '@filerobot/core/dist/style.min.css';
 import '@filerobot/explorer/dist/style.min.css';
+import './custom-style.css';
 import React, { useRef, useEffect } from 'react';
 import PropTypes from "prop-types";
 import messages from "./messages";
@@ -31,14 +32,13 @@ const FilerobotDAM = (props) => {
                 },
                 target: '#filerobot-widget',
                 inline: true,
-                width: 10000,
-                height: 1000,
-                disableExportButton: true,
+                width: "100%",
+                height: "100%",
+                disableExportButton: false,
                 hideExportButtonIcon: true,
                 preventExportDefaultBehavior: true,
                 resetAfterClose: true,
                 dismissUrlPathQueryUpdate: true,
-                hideSearch: true,
                 locale: {
                     strings: {
                         mutualizedExportButtonLabel: intl.formatMessage(messages.insertLabel),

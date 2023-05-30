@@ -1,6 +1,6 @@
 {
   "name": "scaleflex-filerobot",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "private": true,
   "scripts": {
@@ -53,9 +53,9 @@
     "@commercetools-uikit/text-field": "^15.3.0",
     "@commercetools-uikit/text-input": "^15.3.0",
     "@commercetools/sync-actions": "^5.1.0",
-    "@filerobot/core": "^1.8.0",
-    "@filerobot/explorer": "^1.8.0",
-    "@filerobot/xhr-upload": "^1.8.0",
+    "@filerobot/core": "^2.5.0",
+    "@filerobot/explorer": "^2.5.0",
+    "@filerobot/xhr-upload": "^2.5.0",
     "@formatjs/cli": "4.8.4",
     "@manypkg/cli": "0.19.2",
     "@testing-library/react": "12.1.5",

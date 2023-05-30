@@ -36,7 +36,7 @@ const config = {
   ],
   headers: {
     csp: {
-      "connect-src": ["https://i18n.ultrafast.io", "https://*.filerobot.com", "https://your_app_hostname.com"],
+      "connect-src": ["https://*.ultrafast.io", "https://*.filerobot.com", "https://your_app_hostname.com"],
       "frame-src": ["https://js.stripe.com", "https://hooks.stripe.com", "https://*.filerobot.com","https://your_app_hostname.com"],
       "script-src": ["https://js.stripe.com", "https://*.filerobot.com","https://your_app_hostname.com"]
     }

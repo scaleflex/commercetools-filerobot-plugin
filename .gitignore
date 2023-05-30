@@ -6,3 +6,4 @@ dist
 custom-application-config.mjs
 src/filerobot-config.json
 public
+package-lock.json
