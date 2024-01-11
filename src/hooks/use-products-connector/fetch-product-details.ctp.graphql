@@ -1,0 +1,44 @@
+query FetchProductDetails($productId: String!) {
+  product(id: $productId) {
+    id
+    key
+    version
+    masterData {
+      staged {
+        nameAllLocales {
+          value, locale
+        },
+        masterVariant {
+            id,
+            images {
+                url,
+                label,
+                dimensions {width, height}
+            },
+            sku,
+            key
+        }
+        variants {
+          id,
+          images {
+            url,
+            label,
+            dimensions {width, height}
+          },
+          sku,
+          key
+        }
+        allVariants {
+          id,
+          images {
+            url,
+            label,
+            dimensions {width, height}
+          },
+          sku,
+          key
+        }
+      }
+    }
+  }
+}

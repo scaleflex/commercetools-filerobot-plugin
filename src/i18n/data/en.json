@@ -1,0 +1,16 @@
+{
+  "Products.backToWelcome": "Back to Welcome page",
+  "Products.title": "Product list",
+  "Products.noResults": "There are no products available in this project.",
+  "ProductDetails.changeVariantImage": "Change Image",
+  "ProductDetails.productKeyLabel": "Product key",
+  "ProductDetails.productNameLabel": "Product name",
+  "VariantDetails.variantImageLabel": "Label",
+  "VariantDetails.backToForm": "Back",
+  "VariantDetails.variantUpdated": "Variant {variantSku} updated",
+  "Filerobot.exportLabel": "Export",
+  "Filerobot.insertLabel": "Insert",
+  "Filerobot.variantUpdated": "Variant {variantSku} updated",
+  "Filerobot.errorFileType": "Variant image is not support file {type}",
+  "Filerobot.variantUpdateFail": "Variant {variantSku} has been failed to update"
+}
