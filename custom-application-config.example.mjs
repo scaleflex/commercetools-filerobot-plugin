@@ -4,7 +4,7 @@ import { PERMISSIONS, entryPointUriPath } from './src/constants';
  * @type {import('@commercetools-frontend/application-config').ConfigOptions}
  */
 const config = {
-  name: 'Filerobot by Scaleflex',
+  name: 'Scaleflex DAM',
   entryPointUriPath,
   cloudIdentifier: 'gcp-eu',
   env: {
@@ -22,7 +22,7 @@ const config = {
   },
   icon: '${path:@commercetools-frontend/assets/application-icons/rocket.svg}',
   mainMenuLink: {
-    defaultLabel: 'Filerobot by Scaleflex',
+    defaultLabel: 'Scaleflex DAM',
     labelAllLocales: [],
     permissions: [PERMISSIONS.View],
   },

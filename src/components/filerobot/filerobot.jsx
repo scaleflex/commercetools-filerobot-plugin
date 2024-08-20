@@ -16,7 +16,7 @@ const FilerobotFormModal = (props) => {
                 title="Filerobot DAM"
                 isOpen={pageModalState.isModalOpen}
                 onClose={pageModalState.closeModal}
-                topBarCurrentPathLabel="Filerobot DAM"
+                topBarCurrentPathLabel="Scaleflex DAM"
                 topBarPreviousPathLabel={messages.backToForm}
             >
                 <div id={"filerobot-widget"}>Loading...</div>

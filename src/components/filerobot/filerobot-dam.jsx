@@ -37,8 +37,15 @@ const FilerobotDAM = (props) => {
                 disableExportButton: false,
                 hideExportButtonIcon: true,
                 preventExportDefaultBehavior: true,
-                resetAfterClose: true,
                 dismissUrlPathQueryUpdate: true,
+                disableDownloadButton: false,
+                hideDownloadButtonIcon: true,
+                preventDownloadDefaultBehavior: true,
+                disableInformer: true,
+                disableFiltersAndSearch: true,
+                filters: {
+                    labels: undefined
+                },
                 locale: {
                     strings: {
                         mutualizedExportButtonLabel: intl.formatMessage(messages.insertLabel),
@@ -55,17 +62,18 @@ const FilerobotDAM = (props) => {
                  */
                 let checkError = false;
                 for (const selected of files) {
-                    if (selected.file.extension !== 'jpg' && selected.file.extension !== 'jpeg'
-                        && selected.file.extension !== 'png' && selected.file.extension !== 'svg'
-                        && selected.file.extension !== 'gif' && selected.file.extension !== 'bmp'
-                        && selected.file.extension !== 'tiff'
+                    let img_type = selected.file.info.img_type;
+                    if (img_type !== 'JPG' && img_type !== 'JPEG'
+                        && img_type !== 'PNG' && img_type !== 'SVG'
+                        && img_type !== 'GIF' && img_type !== 'BMP'
+                        && img_type !== 'TIFF'
                     ) {
                         checkError = true;
                         showNotification({
                             kind: 'error',
                             domain: DOMAINS.SIDE,
                             text: intl.formatMessage(messages.errorFileType, {
-                                type: selected.file.extension
+                                type: img_type
                             }),
                         });
                     }

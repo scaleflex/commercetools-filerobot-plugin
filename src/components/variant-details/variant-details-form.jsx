@@ -77,7 +77,7 @@ const VariantDetailsForm = (props) => {
                                             <TextField
                                                 name={image.url.replaceAll('.', ',')}
                                                 title={intl.formatMessage(messages.variantImageLabel)}
-                                                value={image.label}
+                                                value={(image.label) ? image.label : ""}
                                                 touched={formik.touched[image.url.replaceAll('.', ',')]}
                                                 onChange={(e) => {
                                                     let newImages = images.map((img, key) => {
@@ -129,7 +129,6 @@ const VariantDetailsForm = (props) => {
                                                             }
                                                         });
                                                         setImages(newImages);
-                                                        console.log(images);
                                                     } catch (graphQLErrors) {
                                                         const transformedErrors = transformErrors(graphQLErrors);
                                                         if (transformedErrors.unmappedErrors.length > 0) {
