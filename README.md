@@ -4,9 +4,9 @@
   </a>
 </p>
 
-Filerobot is a scalable and performance-oriented Digital Asset Management platform with integrated image and video optimizers to store, organize, optimize and deliver your media assets such as images, videos, PDFs and many other brand assets fast all around the world to all device types.
+Scaleflex DAM is a scalable and performance-oriented Digital Asset Management platform with integrated image and video optimizers to store, organize, optimize and deliver your media assets such as images, videos, PDFs and many other brand assets fast all around the world to all device types.
 
-# Filerobot by Scaleflex
+# Scaleflex DAM
 
 
 Please follow Official document here: [Commercetools App](https://docs.filerobot.com/go/filerobot-documentation/en/plugins-and-integrations/third-party-integrations/commercetools-app)
